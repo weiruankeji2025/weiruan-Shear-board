@@ -16,8 +16,8 @@ export const generateToken = (user: IUser): string => {
   };
 
   return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: JWT_EXPIRE,
-  });
+    expiresIn: JWT_EXPIRE as string,
+  } as jwt.SignOptions);
 };
 
 export const verifyToken = (token: string): JwtPayload => {

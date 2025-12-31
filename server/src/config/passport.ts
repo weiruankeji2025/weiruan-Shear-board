@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+// @ts-ignore - passport-microsoft doesn't have type definitions
 import { Strategy as MicrosoftStrategy } from 'passport-microsoft';
 import User from '../models/User';
 
@@ -58,7 +59,7 @@ export const configurePassport = () => {
           callbackURL: process.env.MICROSOFT_CALLBACK_URL || '/auth/microsoft/callback',
           scope: ['user.read'],
         },
-        async (accessToken, refreshToken, profile, done) => {
+        async (accessToken: string, refreshToken: string, profile: any, done: any) => {
           try {
             let user = await User.findOne({
               provider: 'microsoft',
