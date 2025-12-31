@@ -177,9 +177,9 @@ get_server_info() {
     print_step "配置服务器访问地址..."
     echo ""
 
-    # 尝试获取公网 IP
+    # 尝试获取公网 IPv4 地址
     PUBLIC_IP=""
-    PUBLIC_IP=$(curl -s ifconfig.me 2>/dev/null || curl -s icanhazip.com 2>/dev/null || echo "")
+    PUBLIC_IP=$(curl -4 -s ifconfig.me 2>/dev/null || curl -4 -s icanhazip.com 2>/dev/null || curl -4 -s api.ipify.org 2>/dev/null || echo "")
 
     if [ ! -z "$PUBLIC_IP" ]; then
         echo -e "${CYAN}检测到服务器公网 IP: ${GREEN}$PUBLIC_IP${NC}"
