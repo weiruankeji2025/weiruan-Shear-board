@@ -1,0 +1,53 @@
+# Render Blueprint - 一键部署配置
+
+services:
+  # 后端服务
+  - type: web
+    name: clipsync-server
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: cd server && npm install && npm run build
+    startCommand: cd server && npm start
+    rootDir: ./
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false  # 手动设置
+      - key: JWT_SECRET
+        generateValue: true  # 自动生成
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: clipsync-client
+          property: host
+    healthCheckPath: /health
+
+  # 前端服务
+  - type: web
+    name: clipsync-client
+    runtime: static
+    region: singapore
+    plan: free
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: ./client/dist
+    rootDir: ./
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: clipsync-server
+          property: host
+          envVarKey: API_URL
+      - key: VITE_SOCKET_URL
+        fromService:
+          type: web
+          name: clipsync-server
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

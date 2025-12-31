@@ -330,21 +330,78 @@ sudo systemctl start mongodb
 
 ## 生产部署
 
-### 使用 Docker Compose（推荐）
+### 🌐 云平台一键部署（推荐）
+
+**完全免费方案，无需服务器**
+
+#### Vercel + Railway（最推荐）
 
 ```bash
-# 1. 配置生产环境变量
-cp .env.example .env
-# 编辑 .env，设置强密码和生产配置
+1. 前端部署到 Vercel: https://vercel.com
+2. 后端部署到 Railway: https://railway.app
+3. 数据库使用 MongoDB Atlas（免费）
+```
+
+**特点：**
+- ✅ 完全免费
+- ✅ 自动 HTTPS
+- ✅ 自动部署（推送到 GitHub 即部署）
+- ✅ CDN 加速
+- ✅ 无需维护服务器
+
+**详细指南：** [一键部署指南.md](一键部署指南.md)
+
+---
+
+#### Render 一键部署
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+**特点：**
+- ✅ 一键部署前端+后端
+- ✅ 完全免费
+- ⚠️ 服务不活跃时会休眠
+
+**详细指南：** [RENDER_DEPLOY.md](RENDER_DEPLOY.md)
+
+---
+
+### 🖥️ VPS 部署
+
+适用于有自己服务器的用户：
+
+```bash
+# 1. 克隆项目
+git clone https://github.com/weiruankeji2025/weiruan-Shear-board.git
+cd weiruan-Shear-board
+
+# 2. 运行一键安装
+./vps-install.sh
+
+# 3. 后台运行
+./start-all-background.sh
+```
+
+---
+
+### 🐳 Docker Compose 部署
+
+```bash
+# 1. 配置环境变量
+echo "JWT_SECRET=$(openssl rand -base64 32)" > .env
 
 # 2. 启动服务
 docker-compose up -d
 
-# 3. 配置反向代理（Nginx/Caddy）
-# 4. 配置 SSL 证书
+# 3. 配置反向代理（可选）
 ```
 
-### 手动部署
+---
+
+### 📦 手动部署
+
+<details>
+<summary>点击展开手动部署步骤</summary>
 
 1. **构建前端**
 ```bash
@@ -372,6 +429,8 @@ pm2 start npm --name "clipsync-client" -- run preview
 ```
 
 5. **配置 Nginx 反向代理**
+
+</details>
 
 ---
 
